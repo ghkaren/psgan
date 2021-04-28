@@ -1,0 +1,10 @@
+Pillow
+opencv-python
+dlib
+torch
+torchvision
+torchgpipe
+matplotlib
+requests
+fvcore
+fire

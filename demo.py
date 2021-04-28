@@ -15,7 +15,7 @@ def main(save_path='transferred_image.png'):
     parser = setup_argparser()
     parser.add_argument(
         "--source_path",
-        default="./assets/images/non-makeup/xfsy_0106.png",
+        default="./assets/images/non-makeup/IMG_6351.png",
         metavar="FILE",
         help="path to source image")
     parser.add_argument(
