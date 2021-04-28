@@ -1,9 +1,8 @@
-cmake
+dlib
 flask
 flask-script
 Pillow
 opencv-python
-dlib
 torch
 torchvision
 torchgpipe
