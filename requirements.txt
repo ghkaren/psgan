@@ -1,3 +1,4 @@
+cmake
 flask
 flask-script
 Pillow
