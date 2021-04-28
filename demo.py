@@ -11,17 +11,22 @@ from psgan import PostProcess
 from setup import setup_config, setup_argparser
 
 
-def main(save_path='transferred_image.png'):
+def main():
     parser = setup_argparser()
+    parser.add_argument(
+        "--save_path",
+        default='transferred_image.png',
+        metavar="FILE",
+        help="path to result image")
     parser.add_argument(
         "--source_path",
         default="./assets/images/non-makeup/IMG_6351.png",
         metavar="FILE",
         help="path to source image")
     parser.add_argument(
-        "--reference_dir",
-        default="assets/images/makeup",
-        help="path to reference images")
+        "--reference_path",
+        default="assets/images/makeup/XMY-014.png",
+        help="path to reference image")
     parser.add_argument(
         "--speed",
         action="store_true",
@@ -44,28 +49,22 @@ def main(save_path='transferred_image.png'):
     postprocess = PostProcess(config)
 
     source = Image.open(args.source_path).convert("RGB")
-    reference_paths = list(Path(args.reference_dir).glob("*"))
-    np.random.shuffle(reference_paths)
-    for reference_path in reference_paths:
-        if not reference_path.is_file():
-            print(reference_path, "is not a valid file.")
-            continue
 
-        reference = Image.open(reference_path).convert("RGB")
+    reference = Image.open(args.reference_path).convert("RGB")
 
-        # Transfer the psgan from reference to source.
-        image, face = inference.transfer(source, reference, with_face=True)
-        source_crop = source.crop(
-            (face.left(), face.top(), face.right(), face.bottom()))
-        image = postprocess(source_crop, image)
-        image.save(save_path)
+    # Transfer the psgan from reference to source.
+    image, face = inference.transfer(source, reference, with_face=True)
+    source_crop = source.crop(
+        (face.left(), face.top(), face.right(), face.bottom()))
+    image = postprocess(source_crop, image)
+    image.save(args.save_path)
 
-        if args.speed:
-            import time
-            start = time.time()
-            for _ in range(100):
-                inference.transfer(source, reference)
-            print("Time cost for 100 iters: ", time.time() - start)
+    if args.speed:
+        import time
+        start = time.time()
+        for _ in range(100):
+            inference.transfer(source, reference)
+        print("Time cost for 100 iters: ", time.time() - start)
 
 
 if __name__ == '__main__':
