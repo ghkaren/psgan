@@ -1,3 +1,5 @@
+flask
+flask-script
 Pillow
 opencv-python
 dlib
